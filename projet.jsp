@@ -1,5 +1,6 @@
-<%@ page import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%!
+<%@ page import="java.util.*, java.time.*" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%
     // Classe POO
     public static class Task implements java.io.Serializable {
         private final String id;
