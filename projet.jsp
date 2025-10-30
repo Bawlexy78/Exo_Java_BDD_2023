@@ -1,8 +1,6 @@
 <%@ page import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%!
-    /** ========================
-     *  POO : classe Task (attributs privés + getters/setters)
-     *  ======================== */
+    // Classe POO
     public static class Task implements java.io.Serializable {
         private final String id;
         private String title;
@@ -17,20 +15,18 @@
             this.dueDate = dueDate;
             this.done = false;
         }
-
         public String getId() { return id; }
         public String getTitle() { return title; }
         public String getDescription() { return description; }
         public String getDueDate() { return dueDate; }
         public boolean isDone() { return done; }
-
         public void setTitle(String title) { this.title = title; }
         public void setDescription(String description) { this.description = description; }
         public void setDueDate(String dueDate) { this.dueDate = dueDate; }
         public void setDone(boolean done) { this.done = done; }
     }
 
-    /** Liste des tâches en session */
+    // Liste en session
     @SuppressWarnings("unchecked")
     private static ArrayList<Task> getTasks(javax.servlet.http.HttpSession session) {
         Object o = session.getAttribute("tasks");
@@ -42,7 +38,7 @@
         return (ArrayList<Task>) o;
     }
 
-    /** Petit échappement HTML (pas de dépendance externe) */
+    // Échappement HTML sans dépendance externe
     private static String esc(String s) {
         if (s == null) return "";
         StringBuilder sb = new StringBuilder();
@@ -60,9 +56,7 @@
     }
 %>
 <%
-    /* ========================
-       Contrôleur minimal (tout-en-un)
-       ======================== */
+    // Contrôleur minimal
     request.setCharacterEncoding("UTF-8");
     ArrayList<Task> tasks = getTasks(session);
 
@@ -76,7 +70,7 @@
         if (title != null && !title.isEmpty()) {
             tasks.add(new Task(title, description.trim(), dueDate));
         }
-        response.sendRedirect("index.jsp"); // PRG: évite le repost au refresh
+        response.sendRedirect("index.jsp"); // évite le repost au refresh
         return;
     }
     if ("del".equals(action)) {
@@ -119,9 +113,8 @@
 <body>
 
 <h1>Mini Gestionnaire de Tâches</h1>
-<p class="muted">Application JSP simple • pas de base de données • stockage en session</p>
+<p class="muted">JSP unique • pas de base de données • stockage en session</p>
 
-<!-- Formulaire d'ajout (HTML dans la JSP) -->
 <form method="post" action="index.jsp?action=add" accept-charset="UTF-8">
     <div style="font-weight:bold;margin-bottom:6px;">Ajouter une tâche</div>
     <label for="title">Titre *</label>
@@ -138,7 +131,6 @@
     </div>
 </form>
 
-<!-- Liste des tâches (boucle JSP) -->
 <table>
     <thead>
         <tr>
@@ -161,7 +153,7 @@
         <tr>
             <td class="<%= t.isDone() ? "done" : "" %>"><%= esc(t.getTitle()) %></td>
             <td class="<%= t.isDone() ? "done" : "" %>"><%= esc(t.getDescription()) %></td>
-            <td class="<%= t.isDone() ? "done" : "" %>"><%= t.getDueDate() == null ? "" : esc(t.getDueDate()) %></td>
+            <td class="<%= t.isDone() ? "done" : "" %>"><%= t.getDueDate()==null ? "" : esc(t.getDueDate()) %></td>
             <td><%= t.isDone() ? "Terminée" : "En cours" %></td>
             <td class="actions">
                 <a class="btn" href="index.jsp?action=toggle&id=<%= esc(t.getId()) %>"><%= t.isDone() ? "Marquer non terminée" : "Marquer terminée" %></a>
@@ -177,4 +169,3 @@
 
 </body>
 </html>
-
